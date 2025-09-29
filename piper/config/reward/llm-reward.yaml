@@ -1,0 +1,19 @@
+# @package _global_
+custom_reward_function:
+  # New syntax for custom reward function, see piper/trainer/ppo/reward.py for more details
+  config:  # hydra config
+    _target_: piper.reward_score.reward_helper_fns.async_to_sync  # convert async function to sync function
+    fn:
+      _target_: piper.reward_score.reward_helper_fns.my_getattr  # get method from object, hacky
+      obj:
+        _target_: piper.reward_score.envsetup.llm_sandbox_reward.SandboxLLMReward  # instantiate the reward obj
+        model: gpt-4.1
+        is_agent: false
+        use_exploration: false
+      name: messages_sandbox_llm_reward_fn_batched_async
+
+reward_model:
+  reward_manager: messages_batch
+
+_tags_:
+  reward: llm-reward

@@ -1,0 +1,5 @@
+# @package _global_
+algorithm:
+  adv_estimator: reinforce_plus_plus_tool_masking
+
+# no tag, this is the default algorithm

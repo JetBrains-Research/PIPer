@@ -1,0 +1,4 @@
+# @package _global_
+data:
+  train_files: /home/user/data/envbench/train.parquet
+  val_files: /home/user/data/envbench/test.parquet

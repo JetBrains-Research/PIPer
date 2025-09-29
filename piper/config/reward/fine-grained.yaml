@@ -1,0 +1,10 @@
+# @package _global_
+custom_reward_function:
+  name: messages_fine_grained_reward_fn_batched_sync
+  path: piper/reward_score/envsetup/fine_grained/reward.py
+
+reward_model:
+  reward_manager: messages_batch
+
+_tags_:
+  reward: fine-grained

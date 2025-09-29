@@ -1,0 +1,4 @@
+# @package _global_
+defaults:
+  - override /reward: llm-reward
+  - override /lr: cosine-5e-6

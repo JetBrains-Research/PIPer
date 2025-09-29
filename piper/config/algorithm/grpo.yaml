@@ -1,0 +1,13 @@
+# @package _global_
+algorithm:
+  adv_estimator: grpo
+
+actor_rollout_ref:
+  actor:
+    use_kl_loss: True
+    kl_loss_type: low_var_kl
+  rollout:
+    n: 5
+
+_tags_:
+  algorithm: grpo

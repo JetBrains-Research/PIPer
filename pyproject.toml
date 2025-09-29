@@ -1,0 +1,49 @@
+[project]
+name = "piper"
+version = "0.1.0"
+description = "On-Device Environment Setup via Online Reinforcement Learning"
+authors = [
+    { name = "Alexander Kovrigin", email = "alexander.kovrigin@jetbrains.com" },
+    { name = "Alexandra Eliseeva", email = "alexandra.eliseeva@jetbrains.com" },
+    { name = "Konstantin Grotov", email = "konstantin.grotov@jetbrains.com" },
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "bashlex>=0.18",
+    "boto3>=1.40.11",
+    "hydra-core>=1.3.2",
+    "langchain==0.3.27",
+    "langchain-openai==0.3.28",
+    "langgraph==0.4.7",
+    "s3fs>=0.4.2",
+    "verl",
+    "envbench_graphs",
+    "langchain-core==0.3.72",
+    "langgraph-prebuilt==0.2.2",
+    "langgraph-sdk==0.1.70",
+    "python-dotenv>=1.1.1",
+]
+
+[tool.setuptools.packages.find]
+where   = ["."]
+include = ["piper", "piper.*"]
+
+[tool.uv]
+package = true
+
+[tool.uv.sources]
+verl = { path = "verl" }
+envbench_graphs = { git = "https://github.com/JetBrains-Research/EnvBench.git", subdirectory = "graphs", branch = "aeliseeva/new-graphs" }
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.9",
+    "ty>=0.0.1a18",
+]
+
+[tool.ty.src]
+exclude = ["verl"]
+
+[tool.ruff]
+exclude = ["verl"]

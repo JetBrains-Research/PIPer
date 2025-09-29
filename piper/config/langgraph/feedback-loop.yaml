@@ -1,0 +1,23 @@
+# @package _global_
+defaults:
+  - /data: local-envbench
+
+actor_rollout_ref:
+  rollout:
+    langgraph:
+      graph:
+        _target_: envbench_graphs.shellcheck.graph.create_shellcheck_workflow
+        pass_state: False  # if True, the function will be called like `run_shellcheck_func(script, state)` otherwise only `run_shellcheck_func(script)`
+        run_shellcheck_func:  # accepts async function
+          _target_: piper.reward_score.reward_helper_fns.sync_to_async
+          fn:
+            _target_: hydra.utils.get_method
+            path: piper.reward_score.envsetup.shellcheck.get_readable_shellcheck_outputs
+        max_iterations: 2
+      graph_config:
+        configurable:
+          thread_id: hack
+        recursion_limit: 500
+
+_tags_:
+  langgraph: feedback-loop

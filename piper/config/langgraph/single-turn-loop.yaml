@@ -1,0 +1,13 @@
+# @package _global_
+
+defaults:
+  - /langgraph/feedback-loop
+
+actor_rollout_ref:
+  rollout:
+    langgraph:
+      graph:
+        max_iterations: 0
+
+_tags_:
+  langgraph: single-turn

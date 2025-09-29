@@ -1,0 +1,5 @@
+# @package _global_
+model_path: JetBrains-Research/Qwen3-8B-am
+
+_tags_:
+  model: Qwen3-8B

@@ -1,0 +1,14 @@
+# @package _global_
+custom:
+  data: 
+    file: envbench
+    config: readonly
+  hf:
+    private: False
+    repo_id: null
+    upload: False
+  s3:
+    bucket: null
+    dir: RL-envsetup/checkpoints/${trainer.project_name}/${trainer.experiment_name}/${now:%Y-%m-%d-%H-%M-%S}-${oc.env:USER,ray}
+    upload: False
+  delete_after_upload: True # delete the local checkpoint after uploading to s3, so that we don't run out of space

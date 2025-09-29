@@ -1,0 +1,23 @@
+# @package _global_
+actor_rollout_ref:
+  model:
+    use_remove_padding: true
+    use_fused_kernels: true
+  actor:
+    ulysses_sequence_parallel_size: 2 # TODO make changable
+    use_dynamic_bsz: True
+    ppo_max_token_len_per_gpu: 16384
+    fsdp_config:
+        param_offload: False  # params relevant to performance tuning but we leave the default values
+        optimizer_offload: False  # params relevant to performance tuning but we leave the default values
+        offload_policy: False  # params relevant to performance tuning but we leave the default values
+  ref:
+    fsdp_config:
+      param_offload: False  # params relevant to performance tuning but we leave the default values
+  rollout:
+    gpu_memory_utilization: 0.7
+    max_num_seqs: 1024
+    tensor_model_parallel_size: 2 # TODO make changable
+
+trainer:
+  n_gpus_per_node: 4 # TODO make changable

@@ -1,0 +1,9 @@
+# @package _global_
+custom_reward_function:
+  name: strict_messages_shellcheck_reward_fn_batched
+  path: piper/reward_score/envsetup/shellcheck.py
+reward_model:
+  reward_manager: messages_batch
+
+_tags_:
+  reward: strict-shellcheck

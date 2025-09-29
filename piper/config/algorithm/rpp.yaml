@@ -1,0 +1,3 @@
+# @package _global_
+algorithm:
+  adv_estimator: reinforce_plus_plus

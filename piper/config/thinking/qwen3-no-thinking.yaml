@@ -1,0 +1,16 @@
+# @package _global_
+data:
+  chat_template_kwargs:
+    enable_thinking: False
+
+actor_rollout_ref:
+  rollout:
+    enable_thinking: False
+    # Sampling parameters from Qwen3 model card
+    temperature: 0.7
+    top_p: 0.8
+    top_k: 20
+    val_kwargs:
+      temperature: 0.7
+      top_p: 0.8
+      top_k: 20

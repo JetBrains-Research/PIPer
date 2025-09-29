@@ -1,0 +1,81 @@
+hydra:
+  searchpath:
+    - pkg://verl/trainer/config
+
+defaults:
+  - ppo_trainer  # loaded from verl/trainer/config/ppo_trainer.yaml
+  - _self_
+  - model: custom-qwen3-8b
+  - langgraph: single-turn-loop # LLM call without feedback
+  - reward: strict-shellcheck
+  - lr: cosine-3e-6
+  - algorithm: rpp_tool_mask  # Reinforce++ with tool masking
+  - thinking: qwen3-no-thinking  # disable reasoning
+  - _perf: 32k-4-gpus # performance config (FSDP, Ulysses, GPUs, ...) # TODO: split into gpu x SP x TP configs
+  - _custom: universal_all_to_s3 # upload to s3, universal for all users and experiments
+
+actor_rollout_ref:
+  actor:
+    checkpoint:
+      contents: [hf_model, model, optimizer, extra]
+    entropy_coeff: 0.001
+    ppo_mini_batch_size: 32
+    ppo_micro_batch_size_per_gpu: 1
+    ppo_epochs: 5  # why is this here?
+    fsdp_config:
+      model_dtype: bfloat16
+  model:
+    path: ${model_path}
+  ref:
+    log_prob_micro_batch_size_per_gpu: 1
+  rollout:
+    # LangGraph Rollout
+    mode: async
+    chat_scheduler: piper.multi_turn.langgraph_chat_scheduler.LangGraphChatCompletionScheduler
+    openai_serving_chat:
+      enable_auto_tools: true
+      tool_parser: hermes
+    multi_turn:
+      enable: true # use custom multi-turn script, or GRPO
+    enforce_eager: false  # why is this here?
+    max_model_len: 32000
+    max_num_batched_tokens: 32000
+    log_prob_micro_batch_size_per_gpu: 1
+critic:
+  checkpoint:
+    contents: [hf_model, model, optimizer, extra]
+  model:
+    fsdp_config:
+      model_dtype: bfloat16
+    path: ${actor_rollout_ref.model.path}
+  optim:
+    lr: 1e-7
+    lr_warmup_steps_ratio: 0.03
+    warmup_style: cosine
+  ppo_micro_batch_size_per_gpu: 1
+custom:  # see piper.hparams_entrypoint.py for usage
+  run_data_preprocess: True
+  run_training: True
+  command: 'python3 -m piper.trainer.multi_turn_main_ppo'
+  save_all_checkpoints: True
+data:
+  max_prompt_length: 30000
+  max_response_length: 4096
+  train_batch_size: 64
+  return_raw_chat: true
+trainer:
+  default_local_dir: /tmp/ray-data/checkpoints/${trainer.project_name}/${trainer.experiment_name}
+  logger:
+  - wandb
+  - console
+  max_actor_ckpt_to_keep: 1
+  experiment_name: ${tags_to_name:${_tags_}}  # automatically generated experiment name
+  project_name: RL-envsetup-baselines
+  total_epochs: 15
+  val_before_train: true
+  log_val_generations: 8
+  test_freq: 0.25
+  save_freq: 15
+  n_gpus_per_node: 4
+  tags: ${tags_to_list:${_tags_}} # automatically generated tags
+_tags_: {} # hydra hacks for automatic tags generation, see config_resolvers.py

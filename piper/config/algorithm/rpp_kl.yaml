@@ -1,0 +1,11 @@
+# @package _global_
+algorithm:
+  adv_estimator: reinforce_plus_plus
+
+# kl configuration from https://github.com/volcengine/verl/blob/52065c6405860bdb0e96342afc82239cb52eb36d/examples/reinforce_plus_plus_trainer/run_qwen2-7b_math_rf.sh
+actor_rollout_ref:
+  actor:
+    use_kl_loss: True
+    kl_loss_coef: 0.001
+    kl_loss_type: mse
+    entropy_coeff: 0

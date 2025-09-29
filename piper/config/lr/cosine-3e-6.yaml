@@ -1,0 +1,10 @@
+# @package _global_
+actor_rollout_ref:
+  actor:
+    optim:
+      lr: 3e-6
+      lr_warmup_steps_ratio: 0.03
+      warmup_style: cosine
+
+_tags_:
+  lr: cos-3e-6
