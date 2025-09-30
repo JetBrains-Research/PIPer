@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    data_source = "JetBrains-Research/envbench-zeroshot-rl"
+    data_source = "JetBrains-Research/PIPer-envbench-zeroshot-rl"
 
     train_dataset = datasets.load_dataset(data_source, args.config, split="train")
     test_dataset = datasets.load_dataset(data_source, args.config, split="test")
